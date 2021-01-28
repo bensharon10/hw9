@@ -9,15 +9,22 @@
 #define NO_OF_DELIMITERS 2
 
 int main (int argc, char **argv)  {
+<<<<<<< HEAD
     
     std::cout << "in main";
     
+=======
+
+>>>>>>> a0478d535e11ea84d76759768498f349e44ef107
     if(check_args(argc, argv)!=0){
         return 1;
     }
 
+<<<<<<< HEAD
     std::cout << "finished checking";
     
+=======
+>>>>>>> a0478d535e11ea84d76759768498f349e44ef107
     char delimiters [NO_OF_DELIMITERS] = {'=','-'};
     String **strings = new String*();
     size_t no_of_strings = 0;
