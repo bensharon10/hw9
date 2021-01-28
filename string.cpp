@@ -1,24 +1,20 @@
 #ifndef STRING_CPP
 #define STRING_CPP
 
+#include "string.h"
 #include <string.h>
-#include <string>
 
-class String {
-    char *data;
-    size_t length;
-}
 String::String():data(""),length(0){}
 
 String::String(const String &str){
 	length = strlen(str.data);
-	data = new char[length];
+	data = new char[length+1];
 	strncpy(data, str.data, length);
 };
 
 String::String(const char *str){
 	length = strlen(str);
-	data = new char[length];
+	data = new char[length+1];
 	strncpy(data, str, length);
 }
 
@@ -26,28 +22,31 @@ String::~String(){
 	delete data;
 }
 
-String::String& operator=(const String &rhs){
-	length = rhs->length;
+String& String::operator=(const String &rhs){
+	this->length = rhs.length;
 	delete data;
-	data = new char[length](rhs);
+	this->data = new char[strlen(rhs.data)+1];
+    strcpy(this->data, rhs.data);
 	return *this;
 }
 
-String::String& operator=(const char *str){
+String& String::operator=(const char *str){
 	this->length = strlen(str);
 	delete data;
-	this->data = new char[length](str);
+    this->data = new char[strlen(str)+1];
+    strcpy(this->data, str);
 	return *this;
 }
 
 bool String::equals(const String &rhs) const{
-	return (!strcmp(this->data, rhs->data));
+	return (!strcmp(this->data, rhs.data));
 }
 
 bool String::equals(const char *rhs) const{
 	return (!strcmp(this->data, rhs));
 }
 
+/*
 void String::split(const char *delimiters, String **output, size_t *size) const{
 	size_t delimiter_length = strlen(delimiters) - 1;
 	bool is_added = false;
@@ -70,15 +69,89 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
 	}
 }
 
-int String::to_integer() const{
 
+void String::split(const char *delimiters, String **output, size_t *size) const{
+    int delimiter_length = strlen(delimiters);
+    int current_delimiter = 0;
+    int no_of_strings = 0;
+    for (int i=0 ; i<delimiter_length ; i++){
+        int last = 0;
+        for (int j=0 ; j<this->length ; j++){
+            if(delimiters[i]==this->data[j]){
+                char* tmp_string = new char[j-last];
+                strncpy(tmp_string,this->data,j-last);
+                String *tmp = new String(tmp_string);
+                output[no_of_strings] = tmp;
+                no_of_strings++;
+            }
+        }
+    }
+}
+*/
+
+void String::split(const char *delimiters, String **output, size_t *size) const{
+    int no_of_delimiters = sizeof(delimiters)/ sizeof(delimiters[0]);
+    int current_delimiter = 0;
+    int no_of_strings = 0;
+    int last = 0;
+
+    for (int i=0 ; i<no_of_delimiters ; i++){
+        for (int j=0 ; j<this->length ; j++){
+            if(delimiters[i]==this->data[j]){
+                char* tmp_string = new char[j-last];
+                strncpy(tmp_string,this->data,j-last);
+                String *tmp = new String(tmp_string);
+                tmp->split(delimiters,output+no_of_strings,size);
+                no_of_strings++;
+                (*size)++;
+                last=j;
+            }
+        }
+    char* tmp_string = new char[(this->length)-last];
+    strncpy(tmp_string,this->data+last,this->length-last);
+    String *tmp = new String(tmp_string);
+    *tmp = tmp->trim();
+    output[0] = tmp;
+    }
 }
 
+int String::to_integer() const{
+    /*
+    int number = 0;
+    for(int i = 0; i < strlen(data); i++){
+        char cur_char = data[i];
+        int cur_digit = cur_char - 48;
+        number = 10*number + cur_digit;
+    }
+
+    return number;
+     */
+    return atoi(this->data);
+}
+
+
 String String::trim() const{
-	String str = new String;
-	str->length = this->length;
-	strncpy(str->data, this->data, str->length);
-	return str;
+
+	int before = 0;
+	int after = 0;
+
+    for (int i=0 ; i<this->length ; i++){
+        if(this->data[i]!=' '){
+            break;
+        }
+        before++;
+    }
+    for (int j=this->length ; j>=0 ; j--){
+        if((this->data)[j]!=' '){
+            break;
+        }
+        after++;
+    }
+
+    char* tmp_string = new char[this->length - (before+after) + 1];
+    strncpy(tmp_string,this->data + before ,this->length - (before+after));
+    String *tmp = new String(tmp_string);
+    return *tmp;
 }
 
 
