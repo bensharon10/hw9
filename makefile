@@ -15,13 +15,13 @@ libfirewall.so: string.o field.o port.o ip.o
 string.o: string.h string.cpp
 	$(CCLINK) $(CXXFLAGS) -c -fpic string.cpp
 	
-field.o: field.h field.cpp
+field.o: field.h string.h ip.h port.h field.cpp
 	$(CCLINK) $(CXXFLAGS) -c -fpic field.cpp
 	
-port.o: port.h port.cpp
+port.o: port.h string.h port.cpp
 	$(CCLINK) $(CXXFLAGS) -c -fpic port.cpp
 	
-ip.o: ip.h ip.cpp
+ip.o: ip.h string.h ip.cpp
 	$(CCLINK) $(CXXFLAGS) -c -fpic ip.cpp
 
 clean:

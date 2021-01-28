@@ -15,7 +15,7 @@ int main (int argc, char **argv)  {
     }
     
     char delimiters [NO_OF_DELIMITERS] = {'=','-'};
-    String **strings;
+    String **strings = new String*();
     size_t no_of_strings = 0;
 
     String rule = String(*argv);
