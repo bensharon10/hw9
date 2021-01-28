@@ -10,9 +10,13 @@
 
 int main (int argc, char **argv)  {
     
+    std::cout << "in main";
+    
     if(check_args(argc, argv)!=0){
         return 1;
     }
+
+    std::cout << "finished checking";
     
     char delimiters [NO_OF_DELIMITERS] = {'=','-'};
     String **strings = new String*();
