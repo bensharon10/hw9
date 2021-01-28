@@ -14,11 +14,11 @@
 
     bool Ip::set_value(String val) {
         String *strings[5];
-        size_t *no_of_strings;
+        size_t *no_of_strings = 0;
         int mask = 0;
         char delimiters[2] = {'.','/'};
         val.split(delimiters,strings,no_of_strings);
-        for(int i=0 ; i<*no_of_strings-1 ; i++){
+        for(size_t i=0 ; i<*no_of_strings-1 ; i++){
             mask += ((strings[i]->to_integer())<<(24-8*i));
             strings[i]->~String();
         }
