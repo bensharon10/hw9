@@ -1,28 +1,25 @@
-CXX     = g++
-CXXFLAGS = -g -Wall -std=c++11
-CCLINK = $(CXX)
-OBJS   = main.o string.o field.o port.o ip.o libfirewall.so libinput.so
-EXEC = firewall.exe
-RM = rm -rf *.o *.so *.exe
+TARGET_LIB = firewall
+TARGET_APP = firewall.exe
+OTHER_LIB = input
+
+LIB_SRCS = string.cpp field.cpp ip.cpp port.cpp  # library source files
+APP_SRCS = main.cpp # app source files
+
+CXX = g++  # C compiler
+CXXFLAGS = -Wall -Wextra -L. -g #-O2 -g  # C flags
+LDFLAGS = -fPIC -shared # linking flags
+RM = rm -f   # rm command
 
 
-$(EXEC): $(OBJS)
-	$(CCLINK) $(OBJS) -o $(EXEC)
+all:${TARGET_APP}
 
-libfirewall.so: string.o field.o port.o ip.o
-	$(CCLINK) $(CXXFLAGS) -shared string.o field.o port.o ip.o -o libfirewall.so
+$(TARGET_LIB):
+	$(CXX) ${CXXFLAGS} ${LDFLAGS} ${LIB_SRCS} -o lib${TARGET_LIB}.so
 
-string.o: string.h string.cpp
-	$(CCLINK) $(CXXFLAGS) -c -fpic string.cpp
-	
-field.o: field.h string.h ip.h port.h field.cpp
-	$(CCLINK) $(CXXFLAGS) -c -fpic field.cpp
-	
-port.o: port.h string.h port.cpp
-	$(CCLINK) $(CXXFLAGS) -c -fpic port.cpp
-	
-ip.o: ip.h string.h ip.cpp
-	$(CCLINK) $(CXXFLAGS) -c -fpic ip.cpp
+
+${TARGET_APP}: ${TARGET_LIB} 
+	$(CXX) ${CXXFLAGS} ${APP_SRCS} -o ${TARGET_APP} -l$(TARGET_LIB) -l$(OTHER_LIB)
+
 
 clean:
-	$(RM)
+	-${RM} ${TARGET_LIB} ${TARGET_APP}
