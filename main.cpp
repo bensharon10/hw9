@@ -9,11 +9,11 @@
 #define NO_OF_DELIMITERS 2
 
 int main (int argc, char **argv)  {
-    
+
     if(check_args(argc, argv)!=0){
         return 1;
     }
-    
+
     char delimiters [NO_OF_DELIMITERS] = {'=','-'};
     String **strings = new String*();
     size_t no_of_strings = 0;

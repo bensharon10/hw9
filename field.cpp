@@ -41,14 +41,14 @@
     }
 
     bool Field::match(String packet){
-        size_t *no_of_fields;
+        size_t *no_of_fields = 0;
         String *fields[4];
         char delimiters[2] = {',','='};
         packet.split(delimiters,fields,no_of_fields);
-        for (int i=0 ; i<*no_of_fields ; i++){
+        for (size_t i = 0 ; i < *no_of_fields ; i++){
             if((this->pattern).equals(*fields[i])){
                 if(this->match_value(*fields[i+1])){
-                    for(int j=i;j<*no_of_fields;j++){
+                    for(size_t j = i;j < *no_of_fields;j++){
                         fields[j]->~String();
                     }
                     return true;

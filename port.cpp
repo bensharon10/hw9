@@ -11,10 +11,10 @@
 
     bool Port::set_value(String val) {
         String *strings[2];
-        size_t *no_of_strings;
+        size_t *no_of_strings = 0;
         char delimiters[1] = {'-'};
         val.split(delimiters,strings,no_of_strings);
-        for(int i=0 ; i<*no_of_strings ; i++){
+        for(size_t i=0 ; i < *no_of_strings ; i++){
             this->range[i] = strings[i]->to_integer();
             strings[i]->~String();
         }
