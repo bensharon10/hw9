@@ -126,7 +126,7 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
         tmp->~String();
     }
     if(!empty){
-        for(int i = 0 ; i<no_of_strings ; i++){
+        for(size_t i = 0 ; i<no_of_strings ; i++){
             delete output[i];
         }
     }
@@ -176,7 +176,7 @@ String String::trim() const{
 	int before = 0;
 	int after = 0;
 
-    for (int i=0 ; i<this->length ; i++){
+    for (size_t i=0 ; i<this->length ; i++){
         if(this->data[i]!=' '){
             break;
         }
