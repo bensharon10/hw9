@@ -107,11 +107,14 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
                 last=j;
             }
         }
-    char* tmp_string = new char[(this->length)-last];
-    strncpy(tmp_string,this->data+last,this->length-last);
-    String *tmp = new String(tmp_string);
-    *tmp = tmp->trim();
-    output[0] = tmp;
+        char* tmp_string = new char[(this->length)-last];
+        strncpy(tmp_string,this->data+last,this->length-last);
+        String *tmp = new String(tmp_string);
+        *tmp = tmp->trim();
+        if(output){
+            output[0] = tmp;
+        }
+        tmp->~String();
     }
 }
 
