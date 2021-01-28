@@ -1,25 +1,28 @@
 CXX     = g++
 CXXFLAGS = -g -Wall -std=c++11
 CCLINK = $(CXX)
-OBJS   = string.o field.o port.o ip.o
+OBJS   = main.o string.o field.o port.o ip.o libfirewall.so libinput.so
 EXEC = firewall.exe
-RM = rm -rf *.o *.exe
+RM = rm -rf *.o *.so *.exe
 
 
 $(EXEC): $(OBJS)
 	$(CCLINK) $(OBJS) -o $(EXEC)
 
-string.o: string.cpp
-	$(CXX) $(CXXFLAGS) -c string.cpp
+libfirewall.so: string.o field.o port.o ip.o
+	$(CCLINK) $(CXXFLAGS) -shared string.o field.o port.o ip.o -o libfirewall.so
+
+string.o: string.h string.cpp
+	$(CCLINK) $(CXXFLAGS) -c -fpic string.cpp
 	
-field.o: field.cpp
-	$(CXX) $(CXXFLAGS) -c field.cpp
+field.o: field.h field.cpp
+	$(CCLINK) $(CXXFLAGS) -c -fpic field.cpp
 	
-port.o: port.cpp field.h
-	$(CXX) $(CXXFLAGS) -c port.cpp
+port.o: port.h port.cpp
+	$(CCLINK) $(CXXFLAGS) -c -fpic port.cpp
 	
-ip.o: ip.cpp field.h
-	$(CXX) $(CXXFLAGS) -c ip.cpp
+ip.o: ip.h ip.cpp
+	$(CCLINK) $(CXXFLAGS) -c -fpic ip.cpp
 
 clean:
 	$(RM)
