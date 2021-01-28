@@ -4,8 +4,13 @@
 #include "string.h"
 #include <string.h>
 
-String::String():data(""),length(0){}
+#define END_OF_STRING "\0"
 
+String::String(){
+    data = new char[1];
+    strncpy(data,END_OF_STRING,1);
+    length = 0;
+}
 String::String(const String &str){
 	length = strlen(str.data);
 	data = new char[length+1];
@@ -68,8 +73,9 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
 		}
 	}
 }
+*/
 
-
+/*
 void String::split(const char *delimiters, String **output, size_t *size) const{
     int delimiter_length = strlen(delimiters);
     int current_delimiter = 0;
@@ -87,16 +93,19 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
         }
     }
 }
+
 */
 
 void String::split(const char *delimiters, String **output, size_t *size) const{
-    int no_of_delimiters = sizeof(delimiters)/ sizeof(delimiters[0]);
-    int current_delimiter = 0;
-    int no_of_strings = 0;
-    int last = 0;
+    size_t no_of_delimiters = strlen(delimiters);
+    size_t no_of_strings = 0;
+    size_t last = 0;
+    bool empty = output;
 
-    for (int i=0 ; i<no_of_delimiters ; i++){
-        for (int j=0 ; j<this->length ; j++){
+    *output = new String[((this->length)/sizeof(short))+1];
+
+    for (size_t i=0 ; i<no_of_delimiters ; i++){
+        for (size_t j=0 ; j<this->length ; j++){
             if(delimiters[i]==this->data[j]){
                 char* tmp_string = new char[j-last];
                 strncpy(tmp_string,this->data,j-last);
@@ -116,7 +125,36 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
         }
         tmp->~String();
     }
+    if(!empty){
+        for(int i = 0 ; i<no_of_strings ; i++){
+            delete output[i];
+        }
+    }
 }
+
+/*
+void String::split(const char *delimiters, String **output, size_t *size) const{
+    if(NULL == delimiters){
+        std::cerr << "Delimiters are NULL";
+        return;
+    }
+
+size_t start_idx = 0;
+size_t end_idx = 0
+size_t str_count = 1;
+size_t num_of_delimiters = strlen(delimiters);
+int flag = 0;
+int ch_num = 0;
+int delim_flag = 0;
+
+if(NULL == output){
+    flag = 1;
+} else {
+    *output = new String[((this->length)/sizeof(short))+1];
+}
+
+*/
+
 
 int String::to_integer() const{
     /*
