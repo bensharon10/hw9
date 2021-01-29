@@ -5,8 +5,6 @@
 #include "field.h"
 #include "ip.h"
 
-#define FULL_ONES (2^32)-1
-
     Ip::Ip(String pattern) : Field(pattern){
         this->low = 0;
         this->high = 0;
@@ -19,19 +17,29 @@
         size_t no_of_strings = 0;
         int mask = 0;
         char delimiters[2] = {'.','/'};
+
+        //std::cout << "set value go to split with string: "<< val.equals("whatever") << std::endl;
+        
         val.split(delimiters,strings,&no_of_strings);
+        //std::cout << "set value Ip split finished " << std::endl;
+        //std::cout << "no of strings is: " << no_of_strings << std::endl;
+
+        //int j = 0 ;
+
         for(size_t i=0 ; i<no_of_strings-1 ; i++){
-            //std::cout << strings[i] << std::endl;
+            //j = (*strings)[i].to_integer();
+            //std::cout << "string " << i << "from split is " << j << std::endl;
             mask += (((*strings)[i].to_integer())<<(24-(8*i)));
             //std::cout << mask << std::endl;
             (*strings)[i].~String();
         }
 
-        std::cout << mask << std::endl;
+        //std::cout << "base of mask is address: " << mask << std::endl;
 
         int mask_bits = (*strings)[no_of_strings-1].to_integer();
-        (*strings)[no_of_strings].~String();
-        this->low = ((mask>>mask_bits)<<mask_bits);
+        //std::cout << "mask bits: " << mask << std::endl;
+        (*strings)[no_of_strings-1].~String();
+        this->low = ((mask>>(32-mask_bits))<<(32-mask_bits));
         
         size_t ones = 0;
         
@@ -42,7 +50,7 @@
 
         this->high = ((mask)|(ones));
 
-        std::cout << "low is - " << low << " high is -  " << high << std::endl;
+        //std::cout << "low is - " << low << " high is -  " << high << std::endl;
 
         return true;
     }
@@ -61,7 +69,7 @@
             (*ip_parts)[i].~String();
         }
 
-        std::cout << "ready to leave ip match value, ip value is: " << ip_value << std::endl;
+        //std::cout << "ready to leave ip match value, ip value is: " << ip_value << std::endl;
         return ((this->high >= ip_value) && (ip_value >= this->low));
     }
 #endif

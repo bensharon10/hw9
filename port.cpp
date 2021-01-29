@@ -37,7 +37,7 @@
 
     bool Port::match_value(String val) const {
         //std::cout << "Port match value started" << std::endl;
-        return ((this->range[1]-val.to_integer())> this->range[0]);
+        return ((this->range[1] >= val.to_integer()) && (val.to_integer() >= this->range[0]));
     }
 
 #endif

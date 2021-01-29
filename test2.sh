@@ -10,6 +10,8 @@ data=$(cat test2-pkts.in | \
 
 echo "$data"
 
+echo "$data" | wc -l 
+
 [[ $(echo "$data" | wc -l) -eq 20 ]] && \
 	echo "*** Test passed *** " && \
 	exit 0

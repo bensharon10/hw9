@@ -26,6 +26,10 @@
     }
 
     bool Field::set_value(String val){
+        val = val.trim();
+        
+        //std::cout << "set value field go to split with string: "<< val.equals("whatever") << std::endl;
+
         //std::cout << "set value Field " << std::endl;
         if (this->get_type()==IP){
             //std::cout << "set value Ip chosen " << std::endl;
@@ -36,6 +40,7 @@
     }
 
     bool Field::match_value(String val) const{
+        val = val.trim();
         if (this->get_type()==IP){
             return ((Ip*) (this))->match_value(val);
         } else {
@@ -56,6 +61,7 @@
         
         //std::cout << "field match return from split" << std::endl;
         for (size_t i = 0 ; i < no_of_fields ; i++){
+            (*fields)[i] = (*fields)[i].trim();
             if((this->pattern).equals((*fields)[i])){
                 if(this->match_value((*fields)[i+1])){
                     //std::cout << "the field is a match start delete loop" << std::endl;
