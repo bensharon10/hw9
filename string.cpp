@@ -154,6 +154,8 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
 }
 */
 
+*/
+
 void String::split(const char *delimiters, String **output, size_t *size) const{
     //std::cout << "reached split" << std::endl;
     if(NULL == delimiters){
@@ -231,7 +233,33 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
     }
     //std::cout << "finished split" << std::endl;
 }
+*/
+	
+void String::split(const char *delimiters, String **output, size_t *size) const {
+    int number_of_strings = 0;
+    char *temp_data = new char[this->length + 1];
+    strcpy(temp_data, data);
+    for (char *p = strtok(temp_data, delimiters); 
+        p != NULL; p = strtok(NULL, delimiters)) {
+        number_of_strings++;
+    }
+    if (output == NULL) {
+        delete[] temp_data;
+        *size = number_of_strings;
+        return;
+    }
+    strcpy(temp_data, data);
+    String *strings = new String[number_of_strings];
 
+    char *p = strtok(temp_data, delimiters);
+    for (int i = 0; i < number_of_strings; i++) {
+        strings[i] = p;
+        p = strtok(NULL, delimiters);
+    }
+    *output = strings;
+    *size = number_of_strings;
+    delete[] temp_data;
+}
 
 
 int String::to_integer() const{
