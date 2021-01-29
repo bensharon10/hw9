@@ -20,7 +20,7 @@ String::String(const String &str){
 String::String(const char *str){
 	length = strlen(str);
 	data = new char[length+1];
-	strncpy(data, str, length);
+	strncpy(data, str, length + 1);
 }
 
 String::~String(){
@@ -51,45 +51,23 @@ bool String::equals(const char *rhs) const{
 	return (!strcmp(this->data, rhs));
 }
 
-/*
-void String::split(const char *delimiters, String **output, size_t *size) const{
-	size_t delimiter_length = strlen(delimiters) - 1;
-	bool is_added = false;
-	for(int i = 0; i < this->length; ++i){
-		int j = 0, start = i;
-		while(delimiters[j] == this->data[i]){
-			if(j == delimiter_length){
-				strncpy(*output + *size, this->data + start, delimiter_length-1);
-				++(*size);
-				is_added = true;
-			}
-			else{
-				++i;
-				++j;
-			}
-		}
-		if(!is_added){
-			i = start;
-		}
-	}
-}
-*/
 
 void String::split(const char *delimiters, String **output, size_t *size) const{
 	std::cout << "enter split" << std::endl;
 	if(delimiters == NULL){
-    	std::cerr << "delimitires is null";
+    	std::cerr << "delimitires is null" << std::endl;
     	return;
     }
-	*size = 0;
+
+	(*size) = 0;
     size_t start = 0, end = 0, num_of_deli = strlen(delimiters);
-    int tmp = 0, string_length = 0, match = 0;
+    int tmp = 0, string_length = 0, match = 0, counter = 1;
 
     if(output == NULL){
     	tmp = 1;
     }
     else{
-    	*output = new String[((this->length / sizeof(short))) + 1];
+    	*output = new String[((this->length) / sizeof(short)) + 1];
     }
 
     while(strncmp(&data[end], END_OF_STRING, 1) != 0){
@@ -102,17 +80,23 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
     				++end;
     				break;
     			}
+
+    			++counter;
+    			if(tmp == 1){
+    				++end;
+    				start = end;
+    				break;
+    			}
     			string_length = end - start;
-    			std::cout << "aaa" << std::endl;
+    			std::cout << "aaaaa" << std::endl;
     			char *tmp_str = new char[string_length + 1];
-    			std::cout << "bbb" << std::endl;
+    			std::cout << "bbbbb" << std::endl;
     			strncpy(tmp_str, &data[start], string_length);
-    			std::cout << "ccc" << std::endl;
+    			std::cout << "ccccc" << std::endl;
     			strncpy(&tmp_str[string_length], END_OF_STRING, 1);
-    			std::cout << "ddd" << std::endl;
+    			std::cout << "ddddd" << std::endl;
     			(*output)[*size] = String(tmp_str);
-    			std::cout << "eee" << std::endl;
-    			++(*size);
+    			std::cout << "eeeee" << std::endl;
     			delete[] tmp_str;
     			++end;
     			start = end;
@@ -124,92 +108,20 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
     	}
     }
 
+    *size = counter;
 
     if(tmp == 0){
     	string_length = end - start;
-    	std::cout << "aaa" << std::endl;
     	char *tmp_str = new char[string_length + 1];
-    	std::cout << "bbb" << std::endl;
     	strncpy(tmp_str, &data[start], string_length);
     	strncpy(&tmp_str[string_length], END_OF_STRING, 1);
     	(*output)[*size] = String(tmp_str);
-    	++(*size);
     	delete[] tmp_str;
     }
 }
 
-/*
-void String::split(const char *delimiters, String **output, size_t *size) const{
-    size_t no_of_delimiters = strlen(delimiters);
-    size_t no_of_strings = 0;
-    size_t last = 0;
-    bool empty = output;
-
-    *output = new String[((this->length)/sizeof(short))+1];
-
-    for (size_t i=0 ; i<no_of_delimiters ; i++){
-        for (size_t j=0 ; j<this->length ; j++){
-            if(delimiters[i]==this->data[j]){
-                char* tmp_string = new char[j-last];
-                strncpy(tmp_string,this->data,j-last);
-                String *tmp = new String(tmp_string);
-                tmp->split(delimiters,output+no_of_strings,size);
-                no_of_strings++;
-                (*size)++;
-                last=j;
-            }
-        }
-        char* tmp_string = new char[(this->length)-last];
-        strncpy(tmp_string,this->data+last,this->length-last);
-        String *tmp = new String(tmp_string);
-        *tmp = tmp->trim();
-        if(output){
-            output[0] = tmp;
-        }
-        tmp->~String();
-    }
-    if(!empty){
-        for(size_t i = 0 ; i<no_of_strings ; i++){
-            delete output[i];
-        }
-    }
-}
-*/
-/*
-void String::split(const char *delimiters, String **output, size_t *size) const{
-    if(NULL == delimiters){
-        std::cerr << "Delimiters are NULL";
-        return;
-    }
-
-size_t start_idx = 0;
-size_t end_idx = 0
-size_t str_count = 1;
-size_t num_of_delimiters = strlen(delimiters);
-int flag = 0;
-int ch_num = 0;
-int delim_flag = 0;
-
-if(NULL == output){
-    flag = 1;
-} else {
-    *output = new String[((this->length)/sizeof(short))+1];
-}
-
-*/
-
 
 int String::to_integer() const{
-    /*
-    int number = 0;
-    for(int i = 0; i < strlen(data); i++){
-        char cur_char = data[i];
-        int cur_digit = cur_char - 48;
-        number = 10*number + cur_digit;
-    }
-
-    return number;
-     */
     return atoi(this->data);
 }
 
