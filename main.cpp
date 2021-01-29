@@ -6,17 +6,19 @@
 #include "ip.h"
 #include "port.h"
 
-#define NO_OF_DELIMITERS 2
+#define NO_OF_DELIMITERS 1
 
 int main (int argc, char **argv)  {
 
-    //if(check_args(argc, argv)){
-  //      return 1;
-//    }
+    if(check_args(argc, argv)){
+        return 1;
+    }
 
-    char delimiters [NO_OF_DELIMITERS] = {'=','-'};
+    char delimiters [NO_OF_DELIMITERS] = {'='};
     String **strings = new String*();
     size_t no_of_strings = 0;
+
+    //std::cout << "created string is:" << argv [1] << std::endl;
 
     String rule = String(argv[1]);
     rule = rule.trim();
@@ -34,9 +36,9 @@ int main (int argc, char **argv)  {
     } else {
         field = new Port(*strings[0]);
     }
-    printf("!!!!!!!!!!!!!!1\n");
-    field->set_value(*strings[1]);
-    printf("!!!!!!!!!!!!!!2\n");
+    //printf("!!!!!!!!!!!!!!1\n");
+    field->set_value((*strings)[1]);
+    //printf("!!!!!!!!!!!!!!2\n");
 
     parse_input(*field);
 
