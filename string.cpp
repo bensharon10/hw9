@@ -76,39 +76,66 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
 */
 
 void String::split(const char *delimiters, String **output, size_t *size) const{
-    std::cout << "reached split" << std::endl;
-    size_t no_of_delimiters = strlen(delimiters);
-    size_t no_of_strings = 0;
-    size_t last = 0;
-    bool empty = !output;
-
-    *output = new String[((this->length)/sizeof(short))+1];
-    for (size_t i = 0 ; i < this->length ; i++){
-        for (size_t j = 0 ; j < no_of_delimiters ; j++){
-            if(delimiters[j]==this->data[i]){
-                if(!empty){
-                    std::cout << "if" << std::endl;
-
-                    char* tmp_string = new char[j-last];
-                    std::cout << "tmp string" << std::endl;
-
-                    std::cout << tmp_string << std::endl;
-                    std::cout << "after tmp string" << std::endl;
-
-                    strncpy(tmp_string,this->data,j-last);
-                    String *tmp = new String(tmp_string);
-                    output[no_of_strings] = tmp;
-                    no_of_strings++;
-                    (*size)++;
-                    last = j;
-                } else {
-                    (*size)++;    
-                }
-            }
-        }
+	std::cout << "enter split" << std::endl;
+	if(delimiters == NULL){
+    	std::cerr << "delimitires is null";
+    	return;
     }
-    std::cout << "finished split" << std::endl;
+	*size = 0;
+    size_t start = 0, end = 0, num_of_deli = strlen(delimiters);
+    int tmp = 0, string_length = 0, match = 0;
 
+    if(output == NULL){
+    	tmp = 1;
+    }
+    else{
+    	*output = new String[((this->length / sizeof(short))) + 1];
+    }
+
+    while(strncmp(&data[end], END_OF_STRING, 1) != 0){
+    	match = 0;
+    	for(size_t i = 0; i < num_of_deli; ++i){
+    		if(delimiters[i] == data[end]){
+    			match = 1;
+    			if(start == end){
+    				++start;
+    				++end;
+    				break;
+    			}
+    			string_length = end - start;
+    			std::cout << "aaa" << std::endl;
+    			char *tmp_str = new char[string_length + 1];
+    			std::cout << "bbb" << std::endl;
+    			strncpy(tmp_str, &data[start], string_length);
+    			std::cout << "ccc" << std::endl;
+    			strncpy(&tmp_str[string_length], END_OF_STRING, 1);
+    			std::cout << "ddd" << std::endl;
+    			(*output)[*size] = String(tmp_str);
+    			std::cout << "eee" << std::endl;
+    			++(*size);
+    			delete[] tmp_str;
+    			++end;
+    			start = end;
+    			break;
+    		}
+    	}
+    	if(match == 0){
+    		++end;
+    	}
+    }
+
+
+    if(tmp == 0){
+    	string_length = end - start;
+    	std::cout << "aaa" << std::endl;
+    	char *tmp_str = new char[string_length + 1];
+    	std::cout << "bbb" << std::endl;
+    	strncpy(tmp_str, &data[start], string_length);
+    	strncpy(&tmp_str[string_length], END_OF_STRING, 1);
+    	(*output)[*size] = String(tmp_str);
+    	++(*size);
+    	delete[] tmp_str;
+    }
 }
 
 /*
