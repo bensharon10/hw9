@@ -7,7 +7,6 @@
 
     Port::Port(String pattern) : Field(pattern){
       this->range[2] = {0};
-      //std::cout << "new Port object" << std::endl;
     }
 
     bool Port::set_value(String val) {
@@ -19,21 +18,8 @@
             this->range[i] = (*strings)[i].to_integer();
             (*strings)[i].~String();
         }
-        //std::cout << "low - " << this->range[0] << "High - " << this->range[1] << std::endl;
         return true;
     }
-
-    /*
-    bool Port::match_value(String val) const {
-        int being_checked = val.to_integer();
-        if(being_checked>=this->range[0] && being_checked<=this->range[1]) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-     */
 
     bool Port::match_value(String val) const {
         //std::cout << "Port match value started" << std::endl;
