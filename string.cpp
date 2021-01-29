@@ -76,32 +76,39 @@ void String::split(const char *delimiters, String **output, size_t *size) const{
 */
 
 void String::split(const char *delimiters, String **output, size_t *size) const{
-    std::cout << "reached split";
+    std::cout << "reached split" << std::endl;
     size_t no_of_delimiters = strlen(delimiters);
     size_t no_of_strings = 0;
     size_t last = 0;
     bool empty = !output;
 
     *output = new String[((this->length)/sizeof(short))+1];
-
-    for (size_t i=0 ; i<this->length ; i++){
-        for (size_t j=0 ; j<no_of_delimiters ; j++){
+    for (size_t i = 0 ; i < this->length ; i++){
+        for (size_t j = 0 ; j < no_of_delimiters ; j++){
             if(delimiters[j]==this->data[i]){
                 if(!empty){
+                    std::cout << "if" << std::endl;
+
                     char* tmp_string = new char[j-last];
-                    std::cout << tmp_string;
+                    std::cout << "tmp string" << std::endl;
+
+                    std::cout << tmp_string << std::endl;
+                    std::cout << "after tmp string" << std::endl;
+
                     strncpy(tmp_string,this->data,j-last);
                     String *tmp = new String(tmp_string);
                     output[no_of_strings] = tmp;
                     no_of_strings++;
                     (*size)++;
-                    last=j;
+                    last = j;
                 } else {
                     (*size)++;    
                 }
             }
         }
     }
+    std::cout << "finished split" << std::endl;
+
 }
 
 /*

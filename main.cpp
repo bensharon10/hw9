@@ -10,17 +10,15 @@
 
 int main (int argc, char **argv)  {
 
-    if(check_args(argc, argv)){
-        return 1;
-    }
-    printf("!!!!!!!!!!!!!!2\n");
+    //if(check_args(argc, argv)){
+  //      return 1;
+//    }
 
     char delimiters [NO_OF_DELIMITERS] = {'=','-'};
     String **strings = new String*();
     size_t no_of_strings = 0;
-    printf("!!!!!!!!!!!!!!3\n");
 
-    String rule = String(*argv);
+    String rule = String(argv[1]);
     rule = rule.trim();
     /**
      * Separating rule type and rule parameters
@@ -30,15 +28,15 @@ int main (int argc, char **argv)  {
      * Create rule object
      */
     Field *field;
-    printf("!!!!!!!!!!!!!!4\n");
 
     if (strings[0]->equals("src-ip") || strings[0]->equals("dst-ip")){
         field = new Ip(*strings[0]);
     } else {
         field = new Port(*strings[0]);
     }
-
+    printf("!!!!!!!!!!!!!!1\n");
     field->set_value(*strings[1]);
+    printf("!!!!!!!!!!!!!!2\n");
 
     parse_input(*field);
 
