@@ -32,11 +32,14 @@
         int mask_bits = (*strings)[no_of_strings-1].to_integer();
         (*strings)[no_of_strings].~String();
         this->low = ((mask>>mask_bits)<<mask_bits);
-        int ones = 1;
-        for(int i=0; i<mask_bits;i++){
-            ones<<1;
-            ones++;
+        
+        size_t ones = 0;
+        
+        for(int i=0; i<(32-mask_bits);i++){
+            ones = ones << 1;
+            ones+=1;
         }
+
         this->high = ((mask)|(ones));
 
         std::cout << "low is - " << low << " high is -  " << high << std::endl;
